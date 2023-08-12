@@ -1,0 +1,14 @@
+<%- include("./partials/header") %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Login Please</a>
+        <a href="/" class="btn btn-danger btn-sm">Register</a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/login" method="post" class="d-flex p-2">
+        <input type="text" name="username" class="form-control" placeholder="Enter email">
+        <input type="text" name="password" class="form-control mx-2" placeholder="Enter password">
+        <input type="submit" value="Login" class="btn btn-md btn-primary mx-2">
+    </form>
+<%- include("./partials/footer") %>
