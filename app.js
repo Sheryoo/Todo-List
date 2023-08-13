@@ -64,7 +64,7 @@ app.use(todoRoutes);
 app.use(function (err, req, res, next) {
   console.log(err);
 });
-
-app.listen(3030, (req, res) => {
+const PORT = 3030;
+app.listen(PORT, (req, res) => {
   console.log("http://localhost:3030");
 });
