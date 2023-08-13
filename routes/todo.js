@@ -44,5 +44,19 @@ router
         res.redirect("/todos");
       })
       .catch((err) => console.log(err));
+  })
+  .get("/edit/todo/:_id", async (req, res) => {
+    const id = req.params;
+    const todo = await Todo.findOne({ _id: id, user: req.user._id });
+    todo.completed = !todo.completed;
+    await todo
+      .save()
+      .then(() => {
+        let done = document.getElementById("done");
+        done.style.display = "none";
+        console.log("Status Changed Successfully !!!");
+        res.redirect("/todos");
+      })
+      .catch((err) => console.log(err));
   });
 module.exports = router;

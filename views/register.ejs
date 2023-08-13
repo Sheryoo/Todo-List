@@ -1,14 +1,18 @@
 <%- include("./partials/header") %>
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light" style="background: #1b3763">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Register Please</a>
         <a href="/login" class="btn btn-danger btn-sm">Login</a>
     </div>
 </nav>
-<div class="container">
-    <form action="/register" method="post" class="d-flex p-2">
+<div class="container my-5 " style="top: 50%;left: 50%;position: 
+absolute; transform: translate(-50%,-50%);
+background: #1b3763;width: 100%; height: 150px; display: block;border-radius: 20px;">
+    <form action="/register" method="post" class="d-flex p-2" style="top: 50%;left: 50%;position: 
+    absolute;transform: translate(-50%,-50%);width: 100%;">
         <input type="text" name="username" class="form-control" placeholder="Enter user">
-        <input type="text" name="password" class="form-control mx-2" placeholder="Enter password">
+        <input type="password" name="password" class="form-control mx-2" placeholder="Enter password">
         <input type="submit" value="Register" class="btn btn-md btn-primary mx-2">
     </form>
+</div>
 <%- include("./partials/footer") %>

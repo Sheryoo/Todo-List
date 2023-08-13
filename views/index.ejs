@@ -1,8 +1,9 @@
 <%- include("./partials/header") %>
 
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar navbar-light" style="background: #1b3763">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Todo App</a>
+        <a href="/login" class="btn btn-danger btn-sm">Log Out</a>
     </div>
 </nav>
 <div class="container mt-5">
@@ -13,8 +14,9 @@
 
     <ul class="list-group my-5">
         <% todos.forEach(todo =>{ %>
-           <li class="list-group-item d-flex justify-content-between">
-            <%= todo.todo %>
+           <li class="list-group-item d-flex justify-content-between" id="li">
+            <span id="task" class="<%= todo.completed ? 'compeletedtask' : '' %>"><%= todo.todo %></span> 
+            <a href="/edit/todo/<%= todo._id %>" class="btn btn-primary btn-sm <%= todo.completed ? 'completed' : '' %>" id="done">Done</a>
             <a href="/delete/todo/<%= todo._id %>" class="btn btn-danger btn-sm">Delete</a>
         </li> 
         <%})%>
