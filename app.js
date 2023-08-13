@@ -66,5 +66,5 @@ app.use(function (err, req, res, next) {
 });
 const port = process.env.PORT || 3030;
 app.listen(port, (req, res) => {
-  console.log("http://localhost:3030");
+  console.log(`http://localhost:${port}`);
 });
