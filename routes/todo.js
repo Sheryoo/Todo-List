@@ -45,7 +45,7 @@ router
       await newTodo
         .save()
         .then(() => {
-          console.log("Successfully Added The Todo !!");
+          // console.log("Successfully Added The Todo !!");
           res.redirect("/todos");
         })
         .catch((err) => console.log(err));
@@ -58,7 +58,7 @@ router
     const { _id } = req.params;
     Todo.deleteOne({ _id })
       .then(() => {
-        console.log("Deleted The Todo Successfully !!!");
+        // console.log("Deleted The Todo Successfully !!!");
         res.redirect("/todos");
       })
       .catch((err) => console.log(err));
@@ -70,18 +70,17 @@ router
     await todo
       .save()
       .then(() => {
-        console.log("Status Changed Successfully !!!");
+        // console.log("Status Changed Successfully !!!");
         res.redirect("/todos");
-        let done = document.getElementById("done");
-        done.style.display = "none";
       })
       .catch((err) => console.log(err));
   })
   .get("/share/todo/:_id", async (req, res) => {
     const id = req.params;
     const userTodos = await Todo.find({ user: req.user._id });
+    console.log(userTodos[0].sharedUser);
     for (let i = 0; i < userTodos.length; i++) {
-      userTodos[i].sharedUser = id;
+      userTodos[i].sharedUser.push(id);
       userTodos[i].authentication = "onlyShow";
       let todo = userTodos[i];
       await todo
@@ -89,14 +88,15 @@ router
         .then(() => {})
         .catch((err) => console.log(err));
     }
-    console.log("Shared to User Successfully !!!");
+
+    // console.log("Shared to User Successfully !!!");
     res.redirect("/todos");
   })
   .get("/shareedit/todo/:_id", async (req, res) => {
     const id = req.params;
     const userTodos = await Todo.find({ user: req.user._id });
     for (let i = 0; i < userTodos.length; i++) {
-      userTodos[i].sharedUser = id;
+      userTodos[i].sharedUser.push(id);
       userTodos[i].authentication = "edit";
       let todo = userTodos[i];
       await todo
@@ -104,14 +104,14 @@ router
         .then(() => {})
         .catch((err) => console.log(err));
     }
-    console.log("Shared to User Successfully !!!");
+    // console.log("Shared to User Successfully !!!");
     res.redirect("/todos");
   })
   .get("/shareauth/todo/:_id", async (req, res) => {
     const id = req.params;
     const userTodos = await Todo.find({ user: req.user._id });
     for (let i = 0; i < userTodos.length; i++) {
-      userTodos[i].sharedUser = id;
+      userTodos[i].sharedUser.push(id);
       userTodos[i].authentication = "auth";
       let todo = userTodos[i];
       await todo
@@ -119,7 +119,7 @@ router
         .then(() => {})
         .catch((err) => console.log(err));
     }
-    console.log("Shared to User Successfully !!!");
+    // console.log("Shared to User Successfully !!!");
     res.redirect("/todos");
   });
 
