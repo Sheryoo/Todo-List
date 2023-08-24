@@ -11,7 +11,7 @@ const todoRoutes = require("./routes/todo");
 
 const app = express();
 
-mongoose.connect("mongodb://0.0.0.0/todo_list", {
+mongoose.connect("mongodb://0.0.0.0/share_todo", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const Todo = require("../models/todo");
+const SheredUser = require("../models/user");
 
 router.use((req, res, next) => {
   if (req.isAuthenticated()) {
@@ -11,8 +12,25 @@ router.use((req, res, next) => {
 
 router.get("/todos", async (req, res) => {
   try {
+    const sharedUsers = await SheredUser.find({});
     const userTodos = await Todo.find({ user: req.user._id });
-    res.render("index", { todos: userTodos });
+    const sharedTodos = await Todo.find({ sharedUser: req.user._id });
+    res.render("index", {
+      todos: userTodos,
+      users: sharedUsers,
+      shared: sharedTodos,
+    });
+  } catch (error) {
+    console.error(error);
+    res.redirect("/login");
+  }
+});
+
+router.get("/logout", async (req, res) => {
+  try {
+    req.logOut(() => {
+      res.redirect("/login");
+    });
   } catch (error) {
     console.error(error);
     res.redirect("/todos");
@@ -52,11 +70,57 @@ router
     await todo
       .save()
       .then(() => {
-        let done = document.getElementById("done");
-        done.style.display = "none";
         console.log("Status Changed Successfully !!!");
         res.redirect("/todos");
+        let done = document.getElementById("done");
+        done.style.display = "none";
       })
       .catch((err) => console.log(err));
+  })
+  .get("/share/todo/:_id", async (req, res) => {
+    const id = req.params;
+    const userTodos = await Todo.find({ user: req.user._id });
+    for (let i = 0; i < userTodos.length; i++) {
+      userTodos[i].sharedUser = id;
+      userTodos[i].authentication = "onlyShow";
+      let todo = userTodos[i];
+      await todo
+        .save()
+        .then(() => {})
+        .catch((err) => console.log(err));
+    }
+    console.log("Shared to User Successfully !!!");
+    res.redirect("/todos");
+  })
+  .get("/shareedit/todo/:_id", async (req, res) => {
+    const id = req.params;
+    const userTodos = await Todo.find({ user: req.user._id });
+    for (let i = 0; i < userTodos.length; i++) {
+      userTodos[i].sharedUser = id;
+      userTodos[i].authentication = "edit";
+      let todo = userTodos[i];
+      await todo
+        .save()
+        .then(() => {})
+        .catch((err) => console.log(err));
+    }
+    console.log("Shared to User Successfully !!!");
+    res.redirect("/todos");
+  })
+  .get("/shareauth/todo/:_id", async (req, res) => {
+    const id = req.params;
+    const userTodos = await Todo.find({ user: req.user._id });
+    for (let i = 0; i < userTodos.length; i++) {
+      userTodos[i].sharedUser = id;
+      userTodos[i].authentication = "auth";
+      let todo = userTodos[i];
+      await todo
+        .save()
+        .then(() => {})
+        .catch((err) => console.log(err));
+    }
+    console.log("Shared to User Successfully !!!");
+    res.redirect("/todos");
   });
+
 module.exports = router;

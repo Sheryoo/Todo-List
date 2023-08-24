@@ -14,6 +14,13 @@ const todoSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  sharedUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "sharedUser",
+  },
+  authentication: {
+    type: String
+  }
 });
 
 const Todo = mongoose.model("Todo", todoSchema);

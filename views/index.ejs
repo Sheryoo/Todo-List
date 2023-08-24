@@ -3,9 +3,36 @@
 <nav class="navbar navbar-light" style="background: #1b3763">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Todo App</a>
-        <a href="/login" class="btn btn-danger btn-sm">Log Out</a>
+        <button class="btn btn-primary btn-sm" id="shareBtn" onclick="showShare()">Share Todo</button>
+        <button class="btn btn-danger btn-sm share" id="cancelBtn" onclick="hideShare()">Cancel</button>
+        <a href="/logout" class="btn btn-danger btn-sm">Log Out</a>
     </div>
 </nav>
+<div class="container mt-5 share" id="sharediv">
+    <ul class="list-group">
+        <% if(todos[0]){ %>
+        <% users.forEach(user => { %>
+                <% if(todos[0].user.toString() !== user._id.toString()){ %>
+                <li class="list-group-item d-flex justify-content-between" id="li">
+                    <span id="task"><%= user.username %></span>
+
+                    <div class="dropdown">
+                        <button onclick="showList()" class="dropbtn btn btn-primary btn-sm">Share</button>
+                        <div class="dropdown-content myDropdown">
+                          <a href="/share/todo/<%= user._id %>">Show Only</a>
+                          <a href="/shareedit/todo/<%= user._id %>">Edit Status</a>
+                          <a href="/shareauth/todo/<%= user._id %>">Auth</a>
+                        </div>
+                      </div>
+                    <!-- <a href="/share/todo/<%= user._id %>" class="btn btn-primary btn-sm" id="done">Share</a> -->
+                </li> 
+                <% }})}else{ %>
+                    <li class="list-group-item d-flex justify-content-between" id="li">
+                        <span id="task">Can't Share Empty Todo</span>
+                    </li>
+             <%   } %>
+    </ul>
+</div>
 <div class="container mt-5">
     <form action="/add/todo" method="post" class="d-flex p-2">
         <input type="text" name="todo" class="form-control" placeholder="Enter Todo">
@@ -22,5 +49,56 @@
         <%})%>
     </ul>
 </div>
+<div class="container mt-5">
+    <div class="d-flex p-2">
+        <h1 class="text-primary">Shared Todos</h1>
+    </div>
+    <ul class="list-group my-5">
+        <% shared.forEach(todo =>{ %>
+           <li class="list-group-item d-flex justify-content-between" id="li">
+            <span id="task" class="<%= todo.completed ? 'compeletedtask' : '' %>"><%= todo.todo %></span>
+            <a href="/edit/todo/<%= todo._id %>" class="btn btn-primary btn-sm <%= todo.completed ? 'completed' : '' %> <%= todo.authentication =='onlyShow'?'completed':'' %>" id="done">Done</a>
+            <a href="/delete/todo/<%= todo._id %>" class="btn btn-danger btn-sm <%= todo.authentication =='auth'?'':'completed'%>">Delete</a>
+        </li> 
+        <%})%>
+    </ul>
+</div>
+
+<script>
+    let shareBtn=document.getElementById("shareBtn");
+    let cancelBtn=document.getElementById("cancelBtn");
+    let sharediv=document.getElementById("sharediv");
+    let sharelist=document.querySelector(".sharelist");
+    let listcon=document.querySelector(".listcon");
+    function showShare(){
+        sharediv.classList.toggle("share");
+        cancelBtn.classList.toggle("share");
+        shareBtn.classList.toggle("share");
+    }
+    function hideShare(){
+        sharediv.classList.toggle("share");
+        cancelBtn.classList.toggle("share");
+        shareBtn.classList.toggle("share");
+    }
+    function showList() {
+    let lists= document.getElementsByClassName("myDropdown")
+    for(let i=0;i<lists.length;i++){
+        lists[i].classList.toggle("show");
+    }
+    }
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.toggle('show');
+      }
+    }
+  }
+}
+</script>
 
 <%- include("./partials/footer") %>
